@@ -9,7 +9,7 @@ function App() {
     <div className="App">
     
       <header className="App-header">
-       <h1>rana fl react ya louled again prima</h1>
+       <h1>imed is the best</h1>
        
        
       </header>
