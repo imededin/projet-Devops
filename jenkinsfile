@@ -1,0 +1,38 @@
+pipeline{
+    environment{
+        dockerimagename:"imed1/react-app"
+        dockerImage=""
+    }
+    agent any
+    stages{
+        stage('checkoutsource'){
+            steps{
+                git https://github.com/imededin/herokuTest.git
+            }
+        }
+        stage('build'){
+            steps{
+                script{
+                    dockerImage= docker.build dockerimagename
+                }
+            }
+
+        }
+        stage("push"){
+
+            environment{
+                registryCredential='dockerc'
+            }
+            docker.withRegistry('https://registry.hub.docker.com/',registryCredential){
+                dockerImage.push("latest")
+            }
+        }
+        stage("deploy"){
+            steps{
+                script{
+                    kebernetesDeploy(configs:"deployment.yml",kubeconfigId:"kebernetes")
+                }
+            }
+        }
+    }
+}

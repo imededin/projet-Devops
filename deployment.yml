@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: react-app
+   labels: 
+      app: react-app
+
+spec:
+   selector:
+      matchLabels:
+         app: react-app
+   replicas: 2
+   template:
+      metadata:
+         name: react-app
+         labels:
+            app: react-app
+      spec:
+        
+         containers:
+         - name: react-container
+           image: imed1/react-app
+           containerPort: 8000
+---
+apiVersion: v1
+kind: Service 
+metadata: 
+   name: react-service 
+spec:
+   type: LoadBalancer
+   selector:
+       app: react-app
+   ports:
+      - protocol: TCP
+        port: 80
+        targetPort: 8000
+        nodePort: 31001
+
+
+   
+           
+            
+   
