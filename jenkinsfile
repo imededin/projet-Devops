@@ -1,13 +1,13 @@
 pipeline{
     environment{
-        dockerimagename:"imed1/react-app"
+        dockerimagename="imed1/react-app"
         dockerImage=""
     }
     agent any
     stages{
         stage('checkoutsource'){
             steps{
-                git https://github.com/imededin/herokuTest.git
+                git 'https://github.com/imededin/herokuTest.git'
             }
         }
         stage('build'){
@@ -23,8 +23,12 @@ pipeline{
             environment{
                 registryCredential='dockerc'
             }
-            docker.withRegistry('https://registry.hub.docker.com/',registryCredential){
-                dockerImage.push("latest")
+            steps{
+                script{
+                    docker.withRegistry('https://registry.hub.docker.com/',registryCredential){
+                        dockerImage.push("latest")
+                    }
+                }
             }
         }
         stage("deploy"){
